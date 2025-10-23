@@ -1,0 +1,565 @@
+ 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Monet - Verificador de Condições de Pele com IA</title>
+    <meta name="description" content="Análise de condições de pele com IA e assistente de dermatologia">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="theme-color" content="#4F46E5">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M12 18C12 12 18 8 32 8C46 8 52 12 52 18L50 26H14L12 18Z' fill='%234F46E5'/%3E%3Crect x='14' y='26' width='36' height='6' fill='%236366F1'/%3E%3Crect x='26' y='14' width='12' height='8' rx='1' fill='%23EF4444'/%3E%3C/svg%3E">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef } = React;
+
+        // Lucide React icons
+        const Camera = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+            </svg>
+        );
+
+        const Upload = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+        );
+
+        const Clock = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+        );
+
+        const AlertCircle = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+        );
+
+        const CheckCircle = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+        );
+
+        const Info = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+        );
+
+        const Home = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+        );
+
+        const Globe = ({ className }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+        );
+
+        const translations = {
+            pt: {
+                appTitle: "Nurse Monet",
+                appSubtitle: "Verificador de Condições de Pele com IA",
+                disclaimerTitle: "Aviso Importante",
+                disclaimer: "Este aplicativo é apenas para fins informativos e não substitui aconselhamento, diagnóstico ou tratamento médico profissional. Sempre consulte um profissional de saúde qualificado.",
+                takePhoto: "Tirar Foto",
+                uploadPhoto: "Carregar Foto",
+                viewHistory: "Ver Histórico",
+                analyzing: "Analisando Imagem...",
+                analyzingSubtitle: "Nossa IA está examinando a condição da pele",
+                backToHome: "Voltar ao Início",
+                confidence: "Confiança",
+                high: "Alta",
+                medium: "Média",
+                low: "Baixa",
+                mild: "Leve",
+                moderate: "Moderado",
+                severe: "Grave",
+                commonCauses: "Causas Comuns",
+                typicalSymptoms: "Sintomas Típicos",
+                recommendations: "Recomendações",
+                whenToSeeDoctor: "Quando Consultar um Médico",
+                otherPossibilities: "Outras Possibilidades",
+                saveToHistory: "Salvar no Histórico",
+                history: "Histórico",
+                noHistory: "Nenhuma análise salva ainda",
+                saved: "Salvo no histórico!",
+                errorTitle: "Desculpe, houve um erro ao analisar a imagem.",
+                errorMessage: "Por favor, certifique-se de que sua função Netlify está implantada e a chave da API está configurada corretamente."
+            },
+            en: {
+                appTitle: "Nurse Monet",
+                appSubtitle: "AI-Powered Skin Condition Checker",
+                disclaimerTitle: "Important Disclaimer",
+                disclaimer: "This app is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.",
+                takePhoto: "Take Photo",
+                uploadPhoto: "Upload Photo",
+                viewHistory: "View History",
+                analyzing: "Analyzing Image...",
+                analyzingSubtitle: "Our AI is examining the skin condition",
+                backToHome: "Back to Home",
+                confidence: "Confidence",
+                high: "High",
+                medium: "Medium",
+                low: "Low",
+                mild: "Mild",
+                moderate: "Moderate",
+                severe: "Severe",
+                commonCauses: "Common Causes",
+                typicalSymptoms: "Typical Symptoms",
+                recommendations: "Recommendations",
+                whenToSeeDoctor: "When to See a Doctor",
+                otherPossibilities: "Other Possibilities",
+                saveToHistory: "Save to History",
+                history: "History",
+                noHistory: "No saved analyses yet",
+                saved: "Saved to history!",
+                errorTitle: "Sorry, there was an error analyzing the image.",
+                errorMessage: "Please make sure your Netlify function is deployed and the API key is set correctly."
+            }
+        };
+
+        const SkinDermatologyApp = () => {
+            const [screen, setScreen] = useState('home');
+            const [selectedImage, setSelectedImage] = useState(null);
+            const [analyzing, setAnalyzing] = useState(false);
+            const [result, setResult] = useState(null);
+            const [history, setHistory] = useState([]);
+            const [language, setLanguage] = useState('pt');
+            const fileInputRef = useRef(null);
+
+            const t = translations[language];
+            const BACKEND_URL = 'https://idyllic-arithmetic-bd2278.netlify.app/.netlify/functions/analyze-skin';
+
+            const toggleLanguage = () => {
+                setLanguage(language === 'pt' ? 'en' : 'pt');
+            };
+
+            const analyzeImage = async (imageData) => {
+                setAnalyzing(true);
+                setScreen('analyzing');
+
+                try {
+                    console.log("Sending image to backend...");
+                    
+                    const response = await fetch(BACKEND_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            imageData: imageData
+                        })
+                    });
+
+                    console.log("Response status:", response.status);
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error("Backend Error:", errorText);
+                        throw new Error(`Backend Error: ${response.status}`);
+                    }
+
+                    const detailedInfo = await response.json();
+                    console.log("Analysis complete!", detailedInfo);
+                    
+                    const resultWithImage = {
+                        primaryCondition: detailedInfo.primaryCondition,
+                        confidence: detailedInfo.confidence,
+                        description: detailedInfo.description,
+                        commonCauses: detailedInfo.commonCauses,
+                        symptoms: detailedInfo.symptoms,
+                        severity: detailedInfo.severity,
+                        recommendations: detailedInfo.recommendations,
+                        whenToSeeDoctor: detailedInfo.whenToSeeDoctor,
+                        alternativePossibilities: detailedInfo.alternativePossibilities,
+                        image: selectedImage,
+                        date: new Date().toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US'),
+                        time: new Date().toLocaleTimeString(language === 'pt' ? 'pt-BR' : 'en-US')
+                    };
+                    
+                    setResult(resultWithImage);
+                    setScreen('results');
+                } catch (error) {
+                    console.error("Error analyzing image:", error);
+                    alert(`${t.errorTitle}\n\n${t.errorMessage}`);
+                    setScreen('home');
+                } finally {
+                    setAnalyzing(false);
+                }
+            };
+
+            const handleImageCapture = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            
+                            const maxSize = 1024;
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            if (width > height && width > maxSize) {
+                                height = (height * maxSize) / width;
+                                width = maxSize;
+                            } else if (height > maxSize) {
+                                width = (width * maxSize) / height;
+                                height = maxSize;
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            const base64Data = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
+                            setSelectedImage(canvas.toDataURL('image/jpeg', 0.8));
+                            analyzeImage(base64Data);
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            const saveToHistory = () => {
+                setHistory([result, ...history]);
+                alert(t.saved);
+            };
+
+            const goHome = () => {
+                setScreen('home');
+                setSelectedImage(null);
+                setResult(null);
+            };
+
+            const ConfidenceBadge = ({ confidence }) => {
+                const colors = {
+                    High: 'bg-green-100 text-green-800',
+                    Medium: 'bg-yellow-100 text-yellow-800',
+                    Low: 'bg-orange-100 text-orange-800'
+                };
+                const labels = {
+                    High: t.high,
+                    Medium: t.medium,
+                    Low: t.low
+                };
+                return (
+                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${colors[confidence]}`}>
+                        {labels[confidence]} {t.confidence}
+                    </span>
+                );
+            };
+
+            const SeverityBadge = ({ severity }) => {
+                const colors = {
+                    Mild: 'bg-blue-100 text-blue-800',
+                    Moderate: 'bg-yellow-100 text-yellow-800',
+                    Severe: 'bg-red-100 text-red-800'
+                };
+                const labels = {
+                    Mild: t.mild,
+                    Moderate: t.moderate,
+                    Severe: t.severe
+                };
+                return (
+                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${colors[severity]}`}>
+                        {labels[severity]}
+                    </span>
+                );
+            };
+
+            if (screen === 'home') {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+                        <div className="max-w-md mx-auto p-6">
+                            <div className="flex justify-end mb-4 pt-4">
+                                <button
+                                    onClick={toggleLanguage}
+                                    className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-50 transition"
+                                >
+                                    <Globe className="w-5 h-5 text-indigo-600" />
+                                    <span className="text-sm font-semibold text-gray-700">
+                                        {language === 'pt' ? 'English' : 'Português'}
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div className="text-center mb-8">
+                                <div className="inline-block p-4 bg-white rounded-full shadow-lg mb-4">
+                                    <svg className="w-12 h-12" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 18C12 12 18 8 32 8C46 8 52 12 52 18L50 26H14L12 18Z" fill="#4F46E5" stroke="#312E81" strokeWidth="1"/>
+                                        <rect x="14" y="26" width="36" height="6" fill="#6366F1" stroke="#312E81" strokeWidth="1"/>
+                                        <rect x="26" y="14" width="12" height="8" rx="1" fill="#EF4444" stroke="#991B1B" strokeWidth="1"/>
+                                        <line x1="32" y1="16" x2="32" y2="20" stroke="white" strokeWidth="1.5"/>
+                                        <line x1="30" y1="18" x2="34" y2="18" stroke="white" strokeWidth="1.5"/>
+                                        <circle cx="46" cy="46" r="8" stroke="#4F46E5" strokeWidth="2.5" fill="white"/>
+                                        <circle cx="46" cy="46" r="5" stroke="#6366F1" strokeWidth="1.5" fill="none"/>
+                                        <line x1="52" y1="52" x2="58" y2="58" stroke="#4F46E5" strokeWidth="2.5" strokeLinecap="round"/>
+                                        <circle cx="45" cy="45" r="1" fill="#EC4899"/>
+                                        <circle cx="47.5" cy="47" r="0.8" fill="#EC4899"/>
+                                    </svg>
+                                </div>
+                                <h1 className="text-3xl font-bold text-gray-800 mb-2">{t.appTitle}</h1>
+                                <p className="text-gray-600">{t.appSubtitle}</p>
+                            </div>
+
+                            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
+                                <div className="flex items-start">
+                                    <AlertCircle className="w-5 h-5 text-yellow-600 mr-2 flex-shrink-0 mt-0.5" />
+                                    <div className="text-sm text-yellow-800">
+                                        <p className="font-semibold mb-1">{t.disclaimerTitle}</p>
+                                        <p>{t.disclaimer}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <button
+                                    onClick={() => fileInputRef.current.click()}
+                                    className="w-full bg-indigo-600 text-white py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition flex items-center justify-center space-x-3"
+                                >
+                                    <Camera className="w-6 h-6" />
+                                    <span className="text-lg font-semibold">{t.takePhoto}</span>
+                                </button>
+
+                                <button
+                                    onClick={() => fileInputRef.current.click()}
+                                    className="w-full bg-white text-indigo-600 py-4 rounded-xl shadow-lg hover:bg-gray-50 transition flex items-center justify-center space-x-3 border-2 border-indigo-600"
+                                >
+                                    <Upload className="w-6 h-6" />
+                                    <span className="text-lg font-semibold">{t.uploadPhoto}</span>
+                                </button>
+
+                                {history.length > 0 && (
+                                    <button
+                                        onClick={() => setScreen('history')}
+                                        className="w-full bg-white text-gray-700 py-4 rounded-xl shadow-lg hover:bg-gray-50 transition flex items-center justify-center space-x-3"
+                                    >
+                                        <Clock className="w-6 h-6" />
+                                        <span className="text-lg font-semibold">{t.viewHistory} ({history.length})</span>
+                                    </button>
+                                )}
+                            </div>
+
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                capture="environment"
+                                onChange={handleImageCapture}
+                                className="hidden"
+                            />
+                        </div>
+                    </div>
+                );
+            }
+
+            if (screen === 'analyzing') {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                        <div className="text-center p-6">
+                            <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-6 animate-pulse">
+                                <Camera className="w-16 h-16 text-indigo-600" />
+                            </div>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.analyzing}</h2>
+                            <p className="text-gray-600">{t.analyzingSubtitle}</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (screen === 'results' && result) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+                        <div className="max-w-2xl mx-auto p-6 pb-20">
+                            <div className="flex justify-between items-center mb-4">
+                                <button
+                                    onClick={goHome}
+                                    className="flex items-center text-indigo-600 hover:text-indigo-800"
+                                >
+                                    <Home className="w-5 h-5 mr-2" />
+                                    {t.backToHome}
+                                </button>
+                                <button
+                                    onClick={toggleLanguage}
+                                    className="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-50 transition"
+                                >
+                                    <Globe className="w-4 h-4 text-indigo-600" />
+                                    <span className="text-xs font-semibold text-gray-700">
+                                        {language === 'pt' ? 'EN' : 'PT'}
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+                                <img src={selectedImage} alt="Analyzed skin" className="w-full h-64 object-cover" />
+                            </div>
+
+                            <div className="bg-white rounded-xl shadow-lg p-6 mb-4">
+                                <div className="flex items-start justify-between mb-4">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-800 mb-2">{result.primaryCondition}</h2>
+                                        <div className="flex space-x-2">
+                                            <ConfidenceBadge confidence={result.confidence} />
+                                            <SeverityBadge severity={result.severity} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p className="text-gray-700 mb-6">{result.description}</p>
+
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                                        <Info className="w-5 h-5 mr-2 text-indigo-600" />
+                                        {t.commonCauses}
+                                    </h3>
+                                    <ul className="list-disc list-inside space-y-1 text-gray-700">
+                                        {result.commonCauses.map((cause, idx) => (
+                                            <li key={idx}>{cause}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{t.typicalSymptoms}</h3>
+                                    <ul className="list-disc list-inside space-y-1 text-gray-700">
+                                        {result.symptoms.map((symptom, idx) => (
+                                            <li key={idx}>{symptom}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                                        <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
+                                        {t.recommendations}
+                                    </h3>
+                                    <ul className="list-disc list-inside space-y-1 text-gray-700">
+                                        {result.recommendations.map((rec, idx) => (
+                                            <li key={idx}>{rec}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded">
+                                    <h3 className="text-lg font-semibold text-red-800 mb-2 flex items-center">
+                                        <AlertCircle className="w-5 h-5 mr-2" />
+                                        {t.whenToSeeDoctor}
+                                    </h3>
+                                    <p className="text-red-700">{result.whenToSeeDoctor}</p>
+                                </div>
+
+                                {result.alternativePossibilities.length > 0 && (
+                                    <div className="mb-4">
+                                        <h3 className="text-lg font-semibold text-gray-800 mb-2">{t.otherPossibilities}</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {result.alternativePossibilities.map((alt, idx) => (
+                                                <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
+                                                    {alt}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <button
+                                onClick={saveToHistory}
+                                className="w-full bg-indigo-600 text-white py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition font-semibold"
+                            >
+                                {t.saveToHistory}
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (screen === 'history') {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+                        <div className="max-w-2xl mx-auto p-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <button
+                                    onClick={goHome}
+                                    className="flex items-center text-indigo-600 hover:text-indigo-800"
+                                >
+                                    <Home className="w-5 h-5 mr-2" />
+                                    {t.backToHome}
+                                </button>
+                                <button
+                                    onClick={toggleLanguage}
+                                    className="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-50 transition"
+                                >
+                                    <Globe className="w-4 h-4 text-indigo-600" />
+                                    <span className="text-xs font-semibold text-gray-700">
+                                        {language === 'pt' ? 'EN' : 'PT'}
+                                    </span>
+                                </button>
+                            </div>
+
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6">{t.history}</h2>
+
+                            {history.length === 0 ? (
+                                <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+                                    <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                                    <p className="text-gray-600">{t.noHistory}</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {history.map((item, idx) => (
+                                        <div key={idx} className="bg-white rounded-xl shadow-lg overflow-hidden">
+                                            <div className="flex">
+                                                <img src={item.image} alt="Skin condition" className="w-32 h-32 object-cover" />
+                                                <div className="p-4 flex-1">
+                                                    <h3 className="font-bold text-gray-800 mb-1">{item.primaryCondition}</h3>
+                                                    <p className="text-sm text-gray-600 mb-2">{item.date} {language === 'pt' ? 'às' : 'at'} {item.time}</p>
+                                                    <div className="flex space-x-2">
+                                                        <ConfidenceBadge confidence={item.confidence} />
+                                                        <SeverityBadge severity={item.severity} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            return null;
+        };
+
+        ReactDOM.render(<SkinDermatologyApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
