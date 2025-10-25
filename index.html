@@ -1,565 +1,577 @@
- 
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nurse Monet - Verificador de Condições de Pele com IA</title>
-    <meta name="description" content="Análise de condições de pele com IA e assistente de dermatologia">
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="theme-color" content="#4F46E5">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M12 18C12 12 18 8 32 8C46 8 52 12 52 18L50 26H14L12 18Z' fill='%234F46E5'/%3E%3Crect x='14' y='26' width='36' height='6' fill='%236366F1'/%3E%3Crect x='26' y='14' width='12' height='8' rx='1' fill='%23EF4444'/%3E%3C/svg%3E">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="KatiaLook - Galeria de Penteados com IA">
+  <meta name="theme-color" content="#FDF2F8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KatiaLook">
+  <title>KatiaLook - Galeria & Experimentação</title>
+  
+  <!-- Flower Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FDF2F8'/%3E%3Cstop offset='100%25' style='stop-color:%23FCE7F3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='110' fill='url(%23bg)'/%3E%3Cg transform='translate(256,256)'%3E%3Cellipse cx='0' cy='-80' rx='45' ry='70' fill='%23EC4899' opacity='0.9'/%3E%3Cellipse cx='0' cy='80' rx='45' ry='70' fill='%23F472B6' opacity='0.9'/%3E%3Cellipse cx='-80' cy='0' rx='70' ry='45' fill='%23FBBF24' opacity='0.9'/%3E%3Cellipse cx='80' cy='0' rx='70' ry='45' fill='%2310B981' opacity='0.9'/%3E%3Cellipse cx='-60' cy='-60' rx='50' ry='60' fill='%23A78BFA' opacity='0.9' transform='rotate(-45 -60 -60)'/%3E%3Cellipse cx='60' cy='-60' rx='50' ry='60' fill='%2360A5FA' opacity='0.9' transform='rotate(45 60 -60)'/%3E%3Cellipse cx='-60' cy='60' rx='50' ry='60' fill='%23FB923C' opacity='0.9' transform='rotate(45 -60 60)'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='60' fill='%23F87171' opacity='0.9' transform='rotate(-45 60 60)'/%3E%3Ccircle cx='0' cy='0' r='35' fill='%23FCD34D'/%3E%3Ccircle cx='0' cy='0' r='25' fill='%23FBBF24'/%3E%3C/g%3E%3Ctext x='256' y='450' font-family='Arial' font-size='48' font-weight='bold' fill='%231F2937' text-anchor='middle'%3EKATIALOOK%3C/text%3E%3C/svg%3E">
+  
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FDF2F8'/%3E%3Cstop offset='100%25' style='stop-color:%23FCE7F3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='110' fill='url(%23bg)'/%3E%3Cg transform='translate(256,256)'%3E%3Cellipse cx='0' cy='-80' rx='45' ry='70' fill='%23EC4899' opacity='0.9'/%3E%3Cellipse cx='0' cy='80' rx='45' ry='70' fill='%23F472B6' opacity='0.9'/%3E%3Cellipse cx='-80' cy='0' rx='70' ry='45' fill='%23FBBF24' opacity='0.9'/%3E%3Cellipse cx='80' cy='0' rx='70' ry='45' fill='%2310B981' opacity='0.9'/%3E%3Cellipse cx='-60' cy='-60' rx='50' ry='60' fill='%23A78BFA' opacity='0.9' transform='rotate(-45 -60 -60)'/%3E%3Cellipse cx='60' cy='-60' rx='50' ry='60' fill='%2360A5FA' opacity='0.9' transform='rotate(45 60 -60)'/%3E%3Cellipse cx='-60' cy='60' rx='50' ry='60' fill='%23FB923C' opacity='0.9' transform='rotate(45 -60 60)'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='60' fill='%23F87171' opacity='0.9' transform='rotate(-45 60 60)'/%3E%3Ccircle cx='0' cy='0' r='35' fill='%23FCD34D'/%3E%3Ccircle cx='0' cy='0' r='25' fill='%23FBBF24'/%3E%3C/g%3E%3Ctext x='256' y='450' font-family='Arial' font-size='48' font-weight='bold' fill='%231F2937' text-anchor='middle'%3EKATIALOOK%3C/text%3E%3C/svg%3E">
+  
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkthdGlhTG9vayAtIEdhbGVyaWEgZGUgUGVudGVhZG9zIiwKICAic2hvcnRfbmFtZSI6ICJLYXRpYUxvb2siLAogICJkZXNjcmlwdGlvbiI6ICJHYWxlcmlhIGRlIHBlbnRlYWRvcyBmZW1pbmlub3MgY29tIElBIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjRkRGMkY4IiwKICAidGhlbWVfY29sb3IiOiAiI0ZERjJGOCIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ2RlZnMlM0UlM0NsaW5lYXJHcmFkaWVudCBpZD0nYmcnIHgxPScwJTI1JyB5MT0nMCUyNScgeDI9JzEwMCUyNScgeTI9JzEwMCUyNSclM0UlM0NzdG9wIG9mZnNldD0nMCUyNScgc3R5bGU9J3N0b3AtY29sb3I6JTIzRkRGMkY4Jy8lM0UlM0NzdG9wIG9mZnNldD0nMTAwJTI1JyBzdHlsZT0nc3RvcC1jb2xvcjolMjNGQ0U3RjMnLyUzRSUzQy9saW5lYXJHcmFkaWVudCUzRSUzQy9kZWZzJTNFJTNDcmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzExMCcgZmlsbD0ndXJsKCUyM2JnKSclM0UlM0NnIHRyYW5zZm9ybT0ndHJhbnNsYXRlKDI1NiwyNTYpJyUzRSUzQ2VsbGlwc2UgY3g9JzAnIGN5PSctODAnIHJ4PSc0NScgcnk9JzcwJyBmaWxsPSclMjNFQzQ4OTknIG9wYWNpdHk9JzAuOScvJTNFJTNDZWxsaXBzZSBjeD0nMCcgY3k9JzgwJyByeD0nNDUnIHJ5PSc3MCcgZmlsbD0nJTIzRjQ3MkI2JyBvcGFjaXR5PScwLjknLyUzRSUzQ2VsbGlwc2UgY3g9Jy04MCcgY3k9JzAnIHJ4PSc3MCcgcnk9JzQ1JyBmaWxsPSclMjNGQkJGMjQnIG9wYWNpdHk9JzAuOScvJTNFJTNDZWxsaXBzZSBjeD0nODAnIGN5PScwJyByeD0nNzAnIHJ5PSc0NScgZmlsbD0nJTIzMTBCOTgxJyBvcGFjaXR5PScwLjknLyUzRSUzQ2VsbGlwc2UgY3g9Jy02MCcgY3k9Jy02MCcgcng9JzUwJyByeT0nNjAnIGZpbGw9JyUyM0E3OEJGQScgb3BhY2l0eT0nMC45JyB0cmFuc2Zvcm09J3JvdGF0ZSgtNDUgLTYwIC02MCknLyUzRSUzQ2VsbGlwc2UgY3g9JzYwJyBjeT0nLTYwJyByeD0nNTAnIHJ5PSc2MCcgZmlsbD0nJTIzNjBBNUZBJyBvcGFjaXR5PScwLjknIHRyYW5zZm9ybT0ncm90YXRlKDQ1IDYwIC02MCknLyUzRSUzQ2VsbGlwc2UgY3g9Jy02MCcgY3k9JzYwJyByeD0nNTAnIHJ5PSc2MCcgZmlsbD0nJTIzRkI5MjNDJyBvcGFjaXR5PScwLjknIHRyYW5zZm9ybT0ncm90YXRlKDQ1IC02MCA2MCknLyUzRSUzQ2VsbGlwc2UgY3g9JzYwJyBjeT0nNjAnIHJ4PSc1MCcgcnk9JzYwJyBmaWxsPSclMjNGODcxNzEnIG9wYWNpdHk9JzAuOScgdHJhbnNmb3JtPSdyb3RhdGUoLTQ1IDYwIDYwKScvJTNFJTNDY2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nMzUnIGZpbGw9JyUyM0ZDRDM0RCcvJTNFJTNDY2lyY2xlIGN4PScwJyBjeT0nMCcgcj0nMjUnIGZpbGw9JyUyM0ZCQkYyNCcvJTNFJTNDL2clM0UlM0N0ZXh0IHg9JzI1NicgeT0nNDUwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nNDgnIGZvbnQtd2VpZ2h0PSdib2xkJyBmaWxsPSclMjMxRjI5MzcnIHRleHQtYW5jaG9yPSdtaWRkbGUnJTNFS0FUSUFMT09LJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    const icons = {
+      Camera: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>',
+      Heart: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
+      HeartFilled: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
+      Share2: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
+      Search: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>',
+      X: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+      Globe: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+      Download: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      Loader: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>',
+      Sparkles: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>',
+      Upload: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+      Save: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>'
+    };
+  </script>
+  
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
+  
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <script type="text/babel">
+    const { useState, useRef } = React;
+    
+    const API_KEY = 'd69aa0ec6bmsh06f462f205f2b18p1d8afajsn508e86d7b5d8';
+    
+    const translations = {
+      pt: {
+        title: 'KATIALOOK',
+        subtitle: 'Galeria de Penteados',
+        search: 'Buscar...',
+        all: 'Todos',
+        long: 'Longos',
+        medium: 'Médios',
+        short: 'Curtos',
+        straight: 'Lisos',
+        wavy: 'Ondulados',
+        curly: 'Cacheados',
+        braids: 'Tranças',
+        updos: 'Coques',
+        trending: 'Tendências',
+        favorites: 'Favoritos',
+        myPhoto: 'Minha Foto',
+        uploadPhoto: 'Enviar Foto',
+        uploadDesc: 'Experimente este penteado na sua foto!',
+        camera: 'Câmera',
+        upload: 'Enviar',
+        tryOnMe: 'Experimentar em Mim',
+        processing: 'Processando...',
+        backToGallery: 'Voltar para Galeria',
+        save: 'Salvar',
+        share: 'Compartilhar',
+        download: 'Baixar',
+        close: 'Fechar',
+        addedFav: '💕 Adicionado aos favoritos!',
+        removedFav: '💔 Removido dos favoritos',
+        alertSuccess: '✨ Penteado aplicado!',
+        alertSaved: '✅ Salvo!',
+        alertError: 'Erro:',
+        noResults: 'Nenhum penteado encontrado'
+      },
+      en: {
+        title: 'KATIALOOK',
+        subtitle: 'Hairstyle Gallery',
+        search: 'Search...',
+        all: 'All',
+        long: 'Long',
+        medium: 'Medium',
+        short: 'Short',
+        straight: 'Straight',
+        wavy: 'Wavy',
+        curly: 'Curly',
+        braids: 'Braids',
+        updos: 'Updos',
+        trending: 'Trending',
+        favorites: 'Favorites',
+        myPhoto: 'My Photo',
+        uploadPhoto: 'Upload Photo',
+        uploadDesc: 'Try this hairstyle on your photo!',
+        camera: 'Camera',
+        upload: 'Upload',
+        tryOnMe: 'Try On Me',
+        processing: 'Processing...',
+        backToGallery: 'Back to Gallery',
+        save: 'Save',
+        share: 'Share',
+        download: 'Download',
+        close: 'Close',
+        addedFav: '💕 Added to favorites!',
+        removedFav: '💔 Removed from favorites',
+        alertSuccess: '✨ Hairstyle applied!',
+        alertSaved: '✅ Saved!',
+        alertError: 'Error:',
+        noResults: 'No hairstyles found'
+      }
+    };
+    
+    const hairstylesData = [
+      { id: 1, namePT: 'Liso Longo Platinado', nameEN: 'Long Platinum Straight', category: 'long', style: 'straight', styleCode: 'LongStraight', trending: true, image: 'images/1.jpg' },
+      { id: 2, namePT: 'Liso Longo Chocolate', nameEN: 'Long Chocolate Straight', category: 'long', style: 'straight', styleCode: 'LongStraight', image: 'images/2.jpg' },
+      { id: 3, namePT: 'Ondulado Longo Mel', nameEN: 'Long Honey Wavy', category: 'long', style: 'wavy', styleCode: 'LongWavy', trending: true, image: 'images/3.jpg' },
+      { id: 4, namePT: 'Ondulado Longo Castanho', nameEN: 'Long Brown Wavy', category: 'long', style: 'wavy', styleCode: 'LongWavy', image: 'images/4.jpg' },
+      { id: 5, namePT: 'Cacheado Longo Natural', nameEN: 'Long Natural Curly', category: 'long', style: 'curly', styleCode: 'LongCurly', trending: true, image: 'images/5.jpg' },
+      { id: 6, namePT: 'Cacheado Longo Volumoso', nameEN: 'Long Voluminous Curly', category: 'long', style: 'curly', styleCode: 'LongCurly', image: 'images/6.jpg' },
+      { id: 7, namePT: 'Tranças Box Braids', nameEN: 'Box Braids', category: 'long', style: 'braids', styleCode: 'BoxBraids', trending: true, image: 'images/7.jpg' },
+      { id: 8, namePT: 'Bob Liso Clássico', nameEN: 'Classic Bob', category: 'medium', style: 'straight', styleCode: 'BobCut', trending: true, image: 'images/8.jpg' },
+      { id: 9, namePT: 'Lob Ondulado', nameEN: 'Wavy Lob', category: 'medium', style: 'wavy', styleCode: 'ShoulderLengthHair', trending: true, image: 'images/9.jpg' },
+      { id: 10, namePT: 'Bob Cacheado', nameEN: 'Curly Bob', category: 'medium', style: 'curly', styleCode: 'BobCut', image: 'images/10.jpg' },
+      { id: 11, namePT: 'Pixie Clássico', nameEN: 'Classic Pixie', category: 'short', style: 'straight', styleCode: 'PixieCut', trending: true, image: 'images/11.jpg' },
+      { id: 12, namePT: 'Curto Cacheado', nameEN: 'Short Curly', category: 'short', style: 'curly', styleCode: 'PixieCut', image: 'images/12.jpg' },
+      { id: 13, namePT: 'Rabo de Cavalo Alto', nameEN: 'High Ponytail', category: 'long', style: 'updos', styleCode: 'Ponytail', trending: true, image: 'images/13.jpg' },
+      { id: 14, namePT: 'Coque Alto', nameEN: 'High Bun', category: 'long', style: 'updos', styleCode: 'ManBun', trending: true, image: 'images/14.jpg' },
+      { id: 15, namePT: 'Trança Lateral', nameEN: 'Side Braid', category: 'long', style: 'braids', styleCode: 'TwinBraids', image: 'images/15.jpg' },
+      { id: 16, namePT: 'Ondulado Praia', nameEN: 'Beach Waves', category: 'long', style: 'wavy', styleCode: 'LongWavy', trending: true, image: 'images/16.jpg' },
+      { id: 17, namePT: 'Bob Assimétrico', nameEN: 'Asymmetric Bob', category: 'medium', style: 'straight', styleCode: 'BobCut', trending: true, image: 'images/17.jpg' },
+      { id: 18, namePT: 'Afro Curto', nameEN: 'Short Afro', category: 'short', style: 'curly', styleCode: 'Afro', trending: true, image: 'images/18.jpg' },
+      { id: 19, namePT: 'Coque Bailarina', nameEN: 'Ballerina Bun', category: 'long', style: 'updos', styleCode: 'ManBun', image: 'images/19.jpg' },
+      { id: 20, namePT: 'Tranças Duplas', nameEN: 'Double Braids', category: 'long', style: 'braids', styleCode: 'TwinBraids', image: 'images/20.jpg' }
+    ];
+    
+    const KatiaLook = () => {
+      const [language, setLanguage] = useState(() => localStorage.getItem('katialook-language') || 'pt');
+      const [favorites, setFavorites] = useState(() => {
+        try {
+          const saved = localStorage.getItem('katialook-favorites');
+          return saved ? JSON.parse(saved) : [];
+        } catch { return []; }
+      });
+      const [searchTerm, setSearchTerm] = useState('');
+      const [filterCategory, setFilterCategory] = useState('all');
+      const [filterStyle, setFilterStyle] = useState('all');
+      const [selectedImage, setSelectedImage] = useState(null);
+      const [userPhoto, setUserPhoto] = useState(null);
+      const [processedImage, setProcessedImage] = useState(null);
+      const [isProcessing, setIsProcessing] = useState(false);
 
-    <script type="text/babel">
-        const { useState, useRef } = React;
+      const fileInputRef = useRef(null);
+      const cameraInputRef = useRef(null);
 
-        // Lucide React icons
-        const Camera = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
-            </svg>
-        );
+      const t = translations[language];
 
-        const Upload = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-        );
+      const toggleLanguage = () => {
+        const newLang = language === 'pt' ? 'en' : 'pt';
+        setLanguage(newLang);
+        localStorage.setItem('katialook-language', newLang);
+      };
 
-        const Clock = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-            </svg>
-        );
+      const toggleFavorite = (id) => {
+        const newFavorites = favorites.includes(id)
+          ? favorites.filter(fav => fav !== id)
+          : [...favorites, id];
+        setFavorites(newFavorites);
+        localStorage.setItem('katialook-favorites', JSON.stringify(newFavorites));
+        
+        const message = favorites.includes(id) ? t.removedFav : t.addedFav;
+        showToast(message);
+      };
 
-        const AlertCircle = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-        );
+      const showToast = (message) => {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-neutral-900 text-white px-6 py-3 rounded-full shadow-lg z-50 fade-in';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+      };
 
-        const CheckCircle = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-        );
+      const handlePhotoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              
+              const maxDimension = 1024;
+              if (width > maxDimension || height > maxDimension) {
+                if (width > height) {
+                  height = (height / width) * maxDimension;
+                  width = maxDimension;
+                } else {
+                  width = (width / height) * maxDimension;
+                  height = maxDimension;
+                }
+              }
+              
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              
+              const compressedImage = canvas.toDataURL('image/jpeg', 0.8);
+              setUserPhoto(compressedImage);
+              setProcessedImage(null);
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      };
 
-        const Info = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="16" x2="12" y2="12"/>
-                <line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-        );
+      const applyHairstyle = async (style) => {
+        if (!userPhoto) return;
 
-        const Home = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-        );
-
-        const Globe = ({ className }) => (
-            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-        );
-
-        const translations = {
-            pt: {
-                appTitle: "Nurse Monet",
-                appSubtitle: "Verificador de Condições de Pele com IA",
-                disclaimerTitle: "Aviso Importante",
-                disclaimer: "Este aplicativo é apenas para fins informativos e não substitui aconselhamento, diagnóstico ou tratamento médico profissional. Sempre consulte um profissional de saúde qualificado.",
-                takePhoto: "Tirar Foto",
-                uploadPhoto: "Carregar Foto",
-                viewHistory: "Ver Histórico",
-                analyzing: "Analisando Imagem...",
-                analyzingSubtitle: "Nossa IA está examinando a condição da pele",
-                backToHome: "Voltar ao Início",
-                confidence: "Confiança",
-                high: "Alta",
-                medium: "Média",
-                low: "Baixa",
-                mild: "Leve",
-                moderate: "Moderado",
-                severe: "Grave",
-                commonCauses: "Causas Comuns",
-                typicalSymptoms: "Sintomas Típicos",
-                recommendations: "Recomendações",
-                whenToSeeDoctor: "Quando Consultar um Médico",
-                otherPossibilities: "Outras Possibilidades",
-                saveToHistory: "Salvar no Histórico",
-                history: "Histórico",
-                noHistory: "Nenhuma análise salva ainda",
-                saved: "Salvo no histórico!",
-                errorTitle: "Desculpe, houve um erro ao analisar a imagem.",
-                errorMessage: "Por favor, certifique-se de que sua função Netlify está implantada e a chave da API está configurada corretamente."
+        setIsProcessing(true);
+        try {
+          const base64Data = userPhoto.split(',')[1] || userPhoto;
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'image/jpeg' });
+          
+          const formData = new FormData();
+          formData.append('image', blob, 'photo.jpg');
+          formData.append('hair_style', style.styleCode);
+          formData.append('task_type', 'async');
+          
+          const submitResponse = await fetch('https://hairstyle-changer-pro.p.rapidapi.com/facebody/editing/hairstyle-pro', {
+            method: 'POST',
+            headers: {
+              'x-rapidapi-host': 'hairstyle-changer-pro.p.rapidapi.com',
+              'x-rapidapi-key': API_KEY
             },
-            en: {
-                appTitle: "Nurse Monet",
-                appSubtitle: "AI-Powered Skin Condition Checker",
-                disclaimerTitle: "Important Disclaimer",
-                disclaimer: "This app is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.",
-                takePhoto: "Take Photo",
-                uploadPhoto: "Upload Photo",
-                viewHistory: "View History",
-                analyzing: "Analyzing Image...",
-                analyzingSubtitle: "Our AI is examining the skin condition",
-                backToHome: "Back to Home",
-                confidence: "Confidence",
-                high: "High",
-                medium: "Medium",
-                low: "Low",
-                mild: "Mild",
-                moderate: "Moderate",
-                severe: "Severe",
-                commonCauses: "Common Causes",
-                typicalSymptoms: "Typical Symptoms",
-                recommendations: "Recommendations",
-                whenToSeeDoctor: "When to See a Doctor",
-                otherPossibilities: "Other Possibilities",
-                saveToHistory: "Save to History",
-                history: "History",
-                noHistory: "No saved analyses yet",
-                saved: "Saved to history!",
-                errorTitle: "Sorry, there was an error analyzing the image.",
-                errorMessage: "Please make sure your Netlify function is deployed and the API key is set correctly."
+            body: formData
+          });
+
+          if (!submitResponse.ok) throw new Error(`Submit failed: ${submitResponse.status}`);
+
+          const submitResult = await submitResponse.json();
+          const taskId = submitResult.task_id;
+          if (!taskId) throw new Error('No task_id');
+
+          let attempts = 0;
+          let resultImage = null;
+
+          while (attempts < 30 && !resultImage) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            attempts++;
+
+            const resultResponse = await fetch(`https://hairstyle-changer-pro.p.rapidapi.com/api/rapidapi/query-async-task-result?task_id=${taskId}`, {
+              method: 'GET',
+              headers: {
+                'x-rapidapi-host': 'hairstyle-changer-pro.p.rapidapi.com',
+                'x-rapidapi-key': API_KEY
+              }
+            });
+
+            if (resultResponse.ok) {
+              const resultData = await resultResponse.json();
+              if (resultData.error_code === 0 && resultData.data) {
+                resultImage = resultData.data.image || 
+                             resultData.data.result_image || 
+                             resultData.data.output ||
+                             (resultData.data.images && resultData.data.images[0]);
+                if (resultImage) break;
+              }
             }
-        };
+          }
 
-        const SkinDermatologyApp = () => {
-            const [screen, setScreen] = useState('home');
-            const [selectedImage, setSelectedImage] = useState(null);
-            const [analyzing, setAnalyzing] = useState(false);
-            const [result, setResult] = useState(null);
-            const [history, setHistory] = useState([]);
-            const [language, setLanguage] = useState('pt');
-            const fileInputRef = useRef(null);
+          if (resultImage) {
+            if (!resultImage.startsWith('data:') && !resultImage.startsWith('http')) {
+              resultImage = `data:image/jpeg;base64,${resultImage}`;
+            }
+            setProcessedImage(resultImage);
+            showToast(t.alertSuccess);
+          } else {
+            throw new Error('Timeout');
+          }
+        } catch (error) {
+          alert(`${t.alertError} ${error.message}`);
+        } finally {
+          setIsProcessing(false);
+        }
+      };
 
-            const t = translations[language];
-            const BACKEND_URL = 'https://idyllic-arithmetic-bd2278.netlify.app/.netlify/functions/analyze-skin';
+      const shareImage = async (hairstyle) => {
+        const text = `${language === 'pt' ? 'Confira este penteado' : 'Check out this hairstyle'}: ${language === 'pt' ? hairstyle.namePT : hairstyle.nameEN}`;
+        if (navigator.share) {
+          try {
+            await navigator.share({ title: 'KatiaLook', text: text, url: hairstyle.image });
+          } catch {}
+        } else {
+          navigator.clipboard.writeText(text);
+          showToast(language === 'pt' ? '📋 Copiado!' : '📋 Copied!');
+        }
+      };
 
-            const toggleLanguage = () => {
-                setLanguage(language === 'pt' ? 'en' : 'pt');
-            };
+      const saveResult = () => {
+        if (processedImage) {
+          const link = document.createElement('a');
+          link.href = processedImage;
+          link.download = 'katialook-result.jpg';
+          link.click();
+          showToast(t.alertSaved);
+        }
+      };
 
-            const analyzeImage = async (imageData) => {
-                setAnalyzing(true);
-                setScreen('analyzing');
+      const filteredHairstyles = hairstylesData.filter(style => {
+        const name = language === 'pt' ? style.namePT : style.nameEN;
+        const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = filterCategory === 'all' || style.category === filterCategory;
+        const matchesStyle = filterStyle === 'all' || style.style === filterStyle;
+        const matchesTrending = filterCategory !== 'trending' || style.trending;
+        const matchesFavorites = filterCategory !== 'favorites' || favorites.includes(style.id);
+        return matchesSearch && matchesCategory && matchesStyle && matchesTrending && matchesFavorites;
+      });
 
-                try {
-                    console.log("Sending image to backend...");
-                    
-                    const response = await fetch(BACKEND_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            imageData: imageData
-                        })
-                    });
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-pink-100">
+          <header className="bg-white/80 backdrop-blur-md border-b border-neutral-200 sticky top-0 z-40 shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 py-4">
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <h1 className="text-2xl font-light tracking-wide text-neutral-900">
+                    KATIA<span className="font-semibold">LOOK</span>
+                  </h1>
+                  <p className="text-xs text-neutral-500 mt-1">{t.subtitle}</p>
+                </div>
+                <button
+                  onClick={toggleLanguage}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md bg-pink-100 text-pink-800 font-medium text-sm hover:bg-pink-200 transition"
+                >
+                  <div dangerouslySetInnerHTML={{__html: icons.Globe}} className="w-4 h-4" />
+                  {language === 'pt' ? 'EN' : 'PT'}
+                </button>
+              </div>
+              
+              <div className="relative">
+                <div dangerouslySetInnerHTML={{__html: icons.Search}} className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                <input
+                  type="text"
+                  placeholder={t.search}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                />
+              </div>
+            </div>
+          </header>
 
-                    console.log("Response status:", response.status);
-                    
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        console.error("Backend Error:", errorText);
-                        throw new Error(`Backend Error: ${response.status}`);
-                    }
-
-                    const detailedInfo = await response.json();
-                    console.log("Analysis complete!", detailedInfo);
-                    
-                    const resultWithImage = {
-                        primaryCondition: detailedInfo.primaryCondition,
-                        confidence: detailedInfo.confidence,
-                        description: detailedInfo.description,
-                        commonCauses: detailedInfo.commonCauses,
-                        symptoms: detailedInfo.symptoms,
-                        severity: detailedInfo.severity,
-                        recommendations: detailedInfo.recommendations,
-                        whenToSeeDoctor: detailedInfo.whenToSeeDoctor,
-                        alternativePossibilities: detailedInfo.alternativePossibilities,
-                        image: selectedImage,
-                        date: new Date().toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US'),
-                        time: new Date().toLocaleTimeString(language === 'pt' ? 'pt-BR' : 'en-US')
-                    };
-                    
-                    setResult(resultWithImage);
-                    setScreen('results');
-                } catch (error) {
-                    console.error("Error analyzing image:", error);
-                    alert(`${t.errorTitle}\n\n${t.errorMessage}`);
-                    setScreen('home');
-                } finally {
-                    setAnalyzing(false);
-                }
-            };
-
-            const handleImageCapture = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            
-                            const maxSize = 1024;
-                            let width = img.width;
-                            let height = img.height;
-                            
-                            if (width > height && width > maxSize) {
-                                height = (height * maxSize) / width;
-                                width = maxSize;
-                            } else if (height > maxSize) {
-                                width = (width * maxSize) / height;
-                                height = maxSize;
-                            }
-                            
-                            canvas.width = width;
-                            canvas.height = height;
-                            ctx.drawImage(img, 0, 0, width, height);
-                            
-                            const base64Data = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-                            setSelectedImage(canvas.toDataURL('image/jpeg', 0.8));
-                            analyzeImage(base64Data);
-                        };
-                        img.src = event.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-
-            const saveToHistory = () => {
-                setHistory([result, ...history]);
-                alert(t.saved);
-            };
-
-            const goHome = () => {
-                setScreen('home');
-                setSelectedImage(null);
-                setResult(null);
-            };
-
-            const ConfidenceBadge = ({ confidence }) => {
-                const colors = {
-                    High: 'bg-green-100 text-green-800',
-                    Medium: 'bg-yellow-100 text-yellow-800',
-                    Low: 'bg-orange-100 text-orange-800'
-                };
-                const labels = {
-                    High: t.high,
-                    Medium: t.medium,
-                    Low: t.low
-                };
-                return (
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${colors[confidence]}`}>
-                        {labels[confidence]} {t.confidence}
-                    </span>
-                );
-            };
-
-            const SeverityBadge = ({ severity }) => {
-                const colors = {
-                    Mild: 'bg-blue-100 text-blue-800',
-                    Moderate: 'bg-yellow-100 text-yellow-800',
-                    Severe: 'bg-red-100 text-red-800'
-                };
-                const labels = {
-                    Mild: t.mild,
-                    Moderate: t.moderate,
-                    Severe: t.severe
-                };
-                return (
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${colors[severity]}`}>
-                        {labels[severity]}
-                    </span>
-                );
-            };
-
-            if (screen === 'home') {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-                        <div className="max-w-md mx-auto p-6">
-                            <div className="flex justify-end mb-4 pt-4">
-                                <button
-                                    onClick={toggleLanguage}
-                                    className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow hover:bg-gray-50 transition"
-                                >
-                                    <Globe className="w-5 h-5 text-indigo-600" />
-                                    <span className="text-sm font-semibold text-gray-700">
-                                        {language === 'pt' ? 'English' : 'Português'}
-                                    </span>
-                                </button>
-                            </div>
-
-                            <div className="text-center mb-8">
-                                <div className="inline-block p-4 bg-white rounded-full shadow-lg mb-4">
-                                    <svg className="w-12 h-12" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 18C12 12 18 8 32 8C46 8 52 12 52 18L50 26H14L12 18Z" fill="#4F46E5" stroke="#312E81" strokeWidth="1"/>
-                                        <rect x="14" y="26" width="36" height="6" fill="#6366F1" stroke="#312E81" strokeWidth="1"/>
-                                        <rect x="26" y="14" width="12" height="8" rx="1" fill="#EF4444" stroke="#991B1B" strokeWidth="1"/>
-                                        <line x1="32" y1="16" x2="32" y2="20" stroke="white" strokeWidth="1.5"/>
-                                        <line x1="30" y1="18" x2="34" y2="18" stroke="white" strokeWidth="1.5"/>
-                                        <circle cx="46" cy="46" r="8" stroke="#4F46E5" strokeWidth="2.5" fill="white"/>
-                                        <circle cx="46" cy="46" r="5" stroke="#6366F1" strokeWidth="1.5" fill="none"/>
-                                        <line x1="52" y1="52" x2="58" y2="58" stroke="#4F46E5" strokeWidth="2.5" strokeLinecap="round"/>
-                                        <circle cx="45" cy="45" r="1" fill="#EC4899"/>
-                                        <circle cx="47.5" cy="47" r="0.8" fill="#EC4899"/>
-                                    </svg>
-                                </div>
-                                <h1 className="text-3xl font-bold text-gray-800 mb-2">{t.appTitle}</h1>
-                                <p className="text-gray-600">{t.appSubtitle}</p>
-                            </div>
-
-                            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
-                                <div className="flex items-start">
-                                    <AlertCircle className="w-5 h-5 text-yellow-600 mr-2 flex-shrink-0 mt-0.5" />
-                                    <div className="text-sm text-yellow-800">
-                                        <p className="font-semibold mb-1">{t.disclaimerTitle}</p>
-                                        <p>{t.disclaimer}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-4">
-                                <button
-                                    onClick={() => fileInputRef.current.click()}
-                                    className="w-full bg-indigo-600 text-white py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition flex items-center justify-center space-x-3"
-                                >
-                                    <Camera className="w-6 h-6" />
-                                    <span className="text-lg font-semibold">{t.takePhoto}</span>
-                                </button>
-
-                                <button
-                                    onClick={() => fileInputRef.current.click()}
-                                    className="w-full bg-white text-indigo-600 py-4 rounded-xl shadow-lg hover:bg-gray-50 transition flex items-center justify-center space-x-3 border-2 border-indigo-600"
-                                >
-                                    <Upload className="w-6 h-6" />
-                                    <span className="text-lg font-semibold">{t.uploadPhoto}</span>
-                                </button>
-
-                                {history.length > 0 && (
-                                    <button
-                                        onClick={() => setScreen('history')}
-                                        className="w-full bg-white text-gray-700 py-4 rounded-xl shadow-lg hover:bg-gray-50 transition flex items-center justify-center space-x-3"
-                                    >
-                                        <Clock className="w-6 h-6" />
-                                        <span className="text-lg font-semibold">{t.viewHistory} ({history.length})</span>
-                                    </button>
-                                )}
-                            </div>
-
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                capture="environment"
-                                onChange={handleImageCapture}
-                                className="hidden"
-                            />
-                        </div>
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            {/* My Photo Section */}
+            {userPhoto && (
+              <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-lg font-medium flex items-center gap-2">
+                    <div dangerouslySetInnerHTML={{__html: icons.Camera}} className="w-5 h-5" />
+                    {t.myPhoto}
+                  </h2>
+                  <button
+                    onClick={() => {setUserPhoto(null); setProcessedImage(null);}}
+                    className="text-sm text-red-600 hover:text-red-700"
+                  >
+                    {t.close}
+                  </button>
+                </div>
+                <div className="relative">
+                  {isProcessing && (
+                    <div className="absolute inset-0 bg-white/90 flex items-center justify-center z-10 rounded-lg">
+                      <div className="text-center">
+                        <div dangerouslySetInnerHTML={{__html: icons.Loader}} className="w-8 h-8 text-pink-600 animate-spin mx-auto mb-2" />
+                        <p className="font-medium text-sm">{t.processing}</p>
+                      </div>
                     </div>
-                );
-            }
+                  )}
+                  <img src={processedImage || userPhoto} alt="My photo" className="w-full max-w-sm mx-auto rounded-lg shadow-md" />
+                </div>
+                {processedImage && (
+                  <div className="mt-4 flex gap-2">
+                    <button onClick={saveResult} className="flex-1 bg-neutral-900 text-white py-2 rounded-md font-medium text-sm flex items-center justify-center gap-2">
+                      <div dangerouslySetInnerHTML={{__html: icons.Save}} className="w-4 h-4" />
+                      {t.save}
+                    </button>
+                    <button onClick={() => shareImage({image: processedImage, namePT: 'Resultado', nameEN: 'Result'})} className="bg-white border-2 border-neutral-900 py-2 px-4 rounded-md">
+                      <div dangerouslySetInnerHTML={{__html: icons.Share2}} className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
-            if (screen === 'analyzing') {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-                        <div className="text-center p-6">
-                            <div className="inline-block p-6 bg-white rounded-full shadow-lg mb-6 animate-pulse">
-                                <Camera className="w-16 h-16 text-indigo-600" />
-                            </div>
-                            <h2 className="text-2xl font-bold text-gray-800 mb-2">{t.analyzing}</h2>
-                            <p className="text-gray-600">{t.analyzingSubtitle}</p>
-                        </div>
+            {/* Category Filters */}
+            <div className="mb-4 overflow-x-auto pb-2">
+              <div className="flex gap-2 min-w-max">
+                {[
+                  { key: 'all', label: t.all },
+                  { key: 'favorites', label: t.favorites },
+                  { key: 'trending', label: t.trending },
+                  { key: 'long', label: t.long },
+                  { key: 'medium', label: t.medium },
+                  { key: 'short', label: t.short }
+                ].map(filter => (
+                  <button
+                    key={filter.key}
+                    onClick={() => {setFilterCategory(filter.key); setFilterStyle('all');}}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition ${
+                      filterCategory === filter.key
+                        ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
+                        : 'bg-white text-neutral-700 hover:bg-neutral-100 border'
+                    }`}
+                  >
+                    {filter.label}
+                    {filter.key === 'favorites' && favorites.length > 0 && (
+                      <span className="ml-1 bg-white/30 px-1.5 py-0.5 rounded-full text-xs">{favorites.length}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Style Filters */}
+            <div className="mb-6 overflow-x-auto pb-2">
+              <div className="flex gap-2 min-w-max">
+                {[
+                  { key: 'all', label: t.all },
+                  { key: 'straight', label: t.straight },
+                  { key: 'wavy', label: t.wavy },
+                  { key: 'curly', label: t.curly },
+                  { key: 'braids', label: t.braids },
+                  { key: 'updos', label: t.updos }
+                ].map(filter => (
+                  <button
+                    key={filter.key}
+                    onClick={() => setFilterStyle(filter.key)}
+                    className={`px-3 py-1 rounded-md text-sm font-medium whitespace-nowrap transition ${
+                      filterStyle === filter.key ? 'bg-neutral-900 text-white' : 'bg-neutral-100 hover:bg-neutral-200'
+                    }`}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Gallery Grid */}
+            {filteredHairstyles.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {filteredHairstyles.map(style => (
+                  <div key={style.id} className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all fade-in">
+                    <div className="aspect-[3/4] overflow-hidden cursor-pointer" onClick={() => setSelectedImage(style)}>
+                      <img src={style.image} alt={language === 'pt' ? style.namePT : style.nameEN} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
                     </div>
-                );
-            }
+                    
+                    <button onClick={() => toggleFavorite(style.id)} className="absolute top-2 right-2 bg-white/90 p-2 rounded-full shadow-lg hover:scale-110 transition">
+                      <div dangerouslySetInnerHTML={{__html: favorites.includes(style.id) ? icons.HeartFilled : icons.Heart}} className={`w-5 h-5 ${favorites.includes(style.id) ? 'text-pink-500' : 'text-neutral-600'}`} />
+                    </button>
 
-            if (screen === 'results' && result) {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-                        <div className="max-w-2xl mx-auto p-6 pb-20">
-                            <div className="flex justify-between items-center mb-4">
-                                <button
-                                    onClick={goHome}
-                                    className="flex items-center text-indigo-600 hover:text-indigo-800"
-                                >
-                                    <Home className="w-5 h-5 mr-2" />
-                                    {t.backToHome}
-                                </button>
-                                <button
-                                    onClick={toggleLanguage}
-                                    className="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-50 transition"
-                                >
-                                    <Globe className="w-4 h-4 text-indigo-600" />
-                                    <span className="text-xs font-semibold text-gray-700">
-                                        {language === 'pt' ? 'EN' : 'PT'}
-                                    </span>
-                                </button>
-                            </div>
+                    {style.trending && (
+                      <div className="absolute top-2 left-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium shadow-lg">
+                        ⭐
+                      </div>
+                    )}
 
-                            <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-                                <img src={selectedImage} alt="Analyzed skin" className="w-full h-64 object-cover" />
-                            </div>
-
-                            <div className="bg-white rounded-xl shadow-lg p-6 mb-4">
-                                <div className="flex items-start justify-between mb-4">
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-gray-800 mb-2">{result.primaryCondition}</h2>
-                                        <div className="flex space-x-2">
-                                            <ConfidenceBadge confidence={result.confidence} />
-                                            <SeverityBadge severity={result.severity} />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <p className="text-gray-700 mb-6">{result.description}</p>
-
-                                <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                                        <Info className="w-5 h-5 mr-2 text-indigo-600" />
-                                        {t.commonCauses}
-                                    </h3>
-                                    <ul className="list-disc list-inside space-y-1 text-gray-700">
-                                        {result.commonCauses.map((cause, idx) => (
-                                            <li key={idx}>{cause}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{t.typicalSymptoms}</h3>
-                                    <ul className="list-disc list-inside space-y-1 text-gray-700">
-                                        {result.symptoms.map((symptom, idx) => (
-                                            <li key={idx}>{symptom}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                                        <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
-                                        {t.recommendations}
-                                    </h3>
-                                    <ul className="list-disc list-inside space-y-1 text-gray-700">
-                                        {result.recommendations.map((rec, idx) => (
-                                            <li key={idx}>{rec}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded">
-                                    <h3 className="text-lg font-semibold text-red-800 mb-2 flex items-center">
-                                        <AlertCircle className="w-5 h-5 mr-2" />
-                                        {t.whenToSeeDoctor}
-                                    </h3>
-                                    <p className="text-red-700">{result.whenToSeeDoctor}</p>
-                                </div>
-
-                                {result.alternativePossibilities.length > 0 && (
-                                    <div className="mb-4">
-                                        <h3 className="text-lg font-semibold text-gray-800 mb-2">{t.otherPossibilities}</h3>
-                                        <div className="flex flex-wrap gap-2">
-                                            {result.alternativePossibilities.map((alt, idx) => (
-                                                <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-                                                    {alt}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            <button
-                                onClick={saveToHistory}
-                                className="w-full bg-indigo-600 text-white py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition font-semibold"
-                            >
-                                {t.saveToHistory}
-                            </button>
-                        </div>
+                    <div className="p-3">
+                      <h3 className="font-medium text-sm text-neutral-900 mb-2">
+                        {language === 'pt' ? style.namePT : style.nameEN}
+                      </h3>
+                      
+                      {userPhoto && (
+                        <button
+                          onClick={() => applyHairstyle(style)}
+                          disabled={isProcessing}
+                          className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 rounded-md font-medium text-xs flex items-center justify-center gap-1 hover:from-pink-600 hover:to-purple-600 transition disabled:opacity-50"
+                        >
+                          <div dangerouslySetInnerHTML={{__html: icons.Sparkles}} className="w-3 h-3" />
+                          {t.tryOnMe}
+                        </button>
+                      )}
                     </div>
-                );
-            }
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <div className="text-6xl mb-4">💇‍♀️</div>
+                <h3 className="text-xl font-medium text-neutral-900 mb-2">{t.noResults}</h3>
+              </div>
+            )}
+          </div>
 
-            if (screen === 'history') {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-                        <div className="max-w-2xl mx-auto p-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <button
-                                    onClick={goHome}
-                                    className="flex items-center text-indigo-600 hover:text-indigo-800"
-                                >
-                                    <Home className="w-5 h-5 mr-2" />
-                                    {t.backToHome}
-                                </button>
-                                <button
-                                    onClick={toggleLanguage}
-                                    className="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-50 transition"
-                                >
-                                    <Globe className="w-4 h-4 text-indigo-600" />
-                                    <span className="text-xs font-semibold text-gray-700">
-                                        {language === 'pt' ? 'EN' : 'PT'}
-                                    </span>
-                                </button>
-                            </div>
+          {/* Upload Photo Button */}
+          {!userPhoto && (
+            <div className="fixed bottom-6 right-6 z-30">
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform"
+              >
+                <div dangerouslySetInnerHTML={{__html: icons.Camera}} className="w-6 h-6" />
+              </button>
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+              <input ref={cameraInputRef} type="file" accept="image/*" capture="user" onChange={handlePhotoUpload} className="hidden" />
+            </div>
+          )}
 
-                            <h2 className="text-2xl font-bold text-gray-800 mb-6">{t.history}</h2>
 
-                            {history.length === 0 ? (
-                                <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-                                    <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                                    <p className="text-gray-600">{t.noHistory}</p>
-                                </div>
-                            ) : (
-                                <div className="space-y-4">
-                                    {history.map((item, idx) => (
-                                        <div key={idx} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                                            <div className="flex">
-                                                <img src={item.image} alt="Skin condition" className="w-32 h-32 object-cover" />
-                                                <div className="p-4 flex-1">
-                                                    <h3 className="font-bold text-gray-800 mb-1">{item.primaryCondition}</h3>
-                                                    <p className="text-sm text-gray-600 mb-2">{item.date} {language === 'pt' ? 'às' : 'at'} {item.time}</p>
-                                                    <div className="flex space-x-2">
-                                                        <ConfidenceBadge confidence={item.confidence} />
-                                                        <SeverityBadge severity={item.severity} />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                );
-            }
+          {/* Image Detail Modal */}
+          {selectedImage && !userPhoto && (
+            <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setSelectedImage(null)}>
+              <div className="relative max-w-2xl w-full" onClick={(e) => e.stopPropagation()}>
+                <button onClick={() => setSelectedImage(null)} className="absolute -top-12 right-0 text-white p-2 hover:bg-white/10 rounded-full">
+                  <div dangerouslySetInnerHTML={{__html: icons.X}} className="w-6 h-6" />
+                </button>
+                
+                <img src={selectedImage.image} alt={language === 'pt' ? selectedImage.namePT : selectedImage.nameEN} className="w-full rounded-lg shadow-2xl" />
+                
+                <div className="bg-white rounded-b-lg p-4 -mt-2">
+                  <h3 className="text-lg font-medium mb-3">{language === 'pt' ? selectedImage.namePT : selectedImage.nameEN}</h3>
+                  <div className="flex gap-2">
+                    <button onClick={() => toggleFavorite(selectedImage.id)} className="flex-1 bg-pink-500 text-white py-2 px-4 rounded-md font-medium text-sm flex items-center justify-center gap-2">
+                      <div dangerouslySetInnerHTML={{__html: favorites.includes(selectedImage.id) ? icons.HeartFilled : icons.Heart}} className="w-4 h-4" />
+                      {favorites.includes(selectedImage.id) ? (language === 'pt' ? 'Favoritado' : 'Favorited') : (language === 'pt' ? 'Favoritar' : 'Favorite')}
+                    </button>
+                    <button onClick={() => shareImage(selectedImage)} className="bg-neutral-900 text-white p-2 rounded-md">
+                      <div dangerouslySetInnerHTML={{__html: icons.Share2}} className="w-5 h-5" />
+                    </button>
+                    <button onClick={() => fileInputRef.current?.click()} className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-md font-medium text-sm flex items-center gap-2">
+                      <div dangerouslySetInnerHTML={{__html: icons.Upload}} className="w-4 h-4" />
+                      {t.uploadPhoto}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
 
-            return null;
-        };
-
-        ReactDOM.render(<SkinDermatologyApp />, document.getElementById('root'));
-    </script>
+    ReactDOM.render(<KatiaLook />, document.getElementById('root'));
+  </script>
 </body>
 </html>
